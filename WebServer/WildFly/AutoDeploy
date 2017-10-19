@@ -1,0 +1,13 @@
+①	localhost:9990							
+								
+②	Configuration							
+								
+③	Subsystems							
+								
+④	Web/HTTP - Undertow							
+								
+⑤	JSP / Servlet		View		View	Development		"Development:
+false"
+								
+⑥	Deployment Scanner			Attributes				"Auto deploy exploded:
+false"
