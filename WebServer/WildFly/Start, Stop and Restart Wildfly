@@ -1,0 +1,23 @@
+Start
+
+Linux: $ ./standalone.sh &
+
+Windows: > standalone.bat
+
+Stop
+
+Linux: $ ./jboss-cli.sh --connect command=:shutdown
+
+Windows: > jboss-cli.bat --connect command=:shutdown
+
+Restart
+
+Linux: $ ./jboss-cli.sh --connect command=:reload
+
+Windows: > jboss-cli.bat --connect command=:reload
+
+Start in domain mode
+
+Linux: $ ./domain.sh &
+
+Windows: > domain.bat
