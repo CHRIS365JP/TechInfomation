@@ -4,3 +4,12 @@ http://tech.pjin.jp/blog/2017/10/03/%E3%80%90java%E3%80%91%E6%80%9D%E3%82%8F%E3%
 public void initBinder(WebDataBinder binder) {
     binder.setAutoGrowCollectionLimit(1000);
 }
+
+上限値を超えた時のエラーレスポンスのカスタマイズ例
+@ExceptionHandler
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+@ResponseBody
+public String handleInvalidPropertyException(InvalidPropertyException e) {
+    logger.warn("detected an invalid request.", e);
+    return "Bad Request !!";
+}
