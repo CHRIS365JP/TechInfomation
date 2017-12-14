@@ -1,0 +1,14 @@
+set string=CHANGE_ROOT
+rem 置換前の文字列を表示させてチェック
+set replaced_string="%root%\Apache"
+if exist %root%\Apache\httpd.conf del %root%\Apache\httpd.conf
+set infilenm=%root%\Apache\httpd.sample.conf
+rem if exist file_replaced.txt del file_replaced.txt
+setlocal enabledelayedexpansion
+for /f "delims=" %%a in (%infilenm%) do (
+  rem ファイル編集
+  set line=%%a
+  set line=!line:%string%=%replaced_string%!
+  echo !line! >> %root%\Apache\httpd.conf
+)
+endlocal
