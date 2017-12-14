@@ -1,0 +1,24 @@
+set packagename=WIX_installer
+set wixdir="C:\Program Files\WiX Toolset v3.11\bin"
+
+rem ***1. files load
+set cmd0=%wixdir%\heat dir .\load_files_folder -dr INSTALLDIR -cg Documents -gg -ke -g1 -sfrag -srd -var "var.documentsDir" -v -out sample_file.wxs
+%cmd0%
+
+rem ***2. complie [basic].wxs
+set cmd1=%wixdir%\candle %packagename%.wxs
+%cmd1%
+
+rem ***3. complie [load_files_folder].wxs
+set cmd2=%wixdir%\candle -ddocumentsDir=load_files_folder sample_file.wxs
+%cmd2%
+
+rem ***4. make [packagename].msi
+set cmd3=%wixdir%\light -ext WixUIExtension -cultures:ja-jp %packagename%.wixobj sample_file.wixobj -out %packagename%.msi
+%cmd3%
+
+rem ***5. chain other [others].exe
+set cmd=%wixdir%\candle -ext WixBalExtension -ext WixUtilExtension %pkg%.wxs
+
+rem ***6 make [pkg].exe
+set cmd=%wixdir%\light  -ext WixBalExtension -ext WixUtilExtension %pkg%.wixobj
