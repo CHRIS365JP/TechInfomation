@@ -1,0 +1,12 @@
+SearchTerm term = new SearchTerm() {
+    public boolean match(Message message) {
+        try {
+            if (message.getSubject().contains("Java")) {
+                return true;
+            }
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+};
