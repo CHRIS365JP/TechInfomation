@@ -1,0 +1,3 @@
+In the meantime, you can turn off the validation in 
+preferences/spring/project validators/Data validator 
+uncheck invalid derived query and STS wont throw the marker anymore.
