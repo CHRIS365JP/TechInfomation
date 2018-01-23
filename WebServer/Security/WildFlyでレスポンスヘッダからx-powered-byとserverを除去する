@@ -1,0 +1,18 @@
+概要
+セキュリティの観点から実運用時には、x-powered-byヘッダとserverヘッダを除去しておきたい。
+内容
+standalone/configuration/standalone.xml を編集するだけ。
+<host name="default-host" alias="localhost">
+  <location name="/" handler="welcome-content"/>
+<!--
+  <filter-ref name="server-header"/>
+  <filter-ref name="x-powered-by-header"/>
+-->
+</host>
+...
+<!--
+<filters>
+  <response-header name="server-header" header-name="Server" header-value="Wildfly 8"/>
+  <response-header name="x-powered-by-header" header-name="X-Powered-By" header-value="Undertow 1"/>
+</filters>
+-->
