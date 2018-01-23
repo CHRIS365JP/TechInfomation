@@ -1,0 +1,6 @@
+ServerSignature Off
+TraceEnable Off
+ServerTokens ProductOnly
+
+
+https://qiita.com/bezeklik/items/1c4145652661cf5b2271
