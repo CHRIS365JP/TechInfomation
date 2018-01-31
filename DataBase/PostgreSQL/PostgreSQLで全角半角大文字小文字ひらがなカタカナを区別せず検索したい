@@ -1,0 +1,44 @@
+http://blog.honjala.net/entry/2016/11/18/011752
+
+DROP FUNCTION IF EXISTS sf_translate(text);
+CREATE FUNCTION sf_translate(
+    p_src TEXT
+) RETURNS TEXT AS $$
+DECLARE
+    --text_result text := upper(p_src);
+    text_result text := p_src;
+    arr_hankaku_daku_kanas text[] := array['ｳﾞ', 'ｶﾞ', 'ｷﾞ', 'ｸﾞ', 'ｹﾞ', 'ｺﾞ', 'ｻﾞ', 'ｼﾞ', 'ｽﾞ', 'ｾﾞ', 'ｿﾞ', 'ﾀﾞ', 'ﾁﾞ', 'ﾂﾞ', 'ﾃﾞ', 'ﾄﾞ', 'ﾊﾞ', 'ﾋﾞ', 'ﾌﾞ', 'ﾍﾞ', 'ﾎﾞ', 'ﾊﾟ', 'ﾋﾟ', 'ﾌﾟ', 'ﾍﾟ', 'ﾎﾟ'];
+    arr_zenkaku_daku_kanas text[] := array['ヴ', 'ガ', 'ギ', 'グ', 'ゲ', 'ゴ', 'ザ', 'ジ', 'ズ', 'ゼ', 'ゾ', 'ダ', 'ヂ', 'ヅ', 'デ', 'ド', 'バ', 'ビ', 'ブ', 'ベ', 'ボ', 'パ', 'ピ', 'プ', 'ペ', 'ポ'];
+    text_hankaku_kanas text := 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｧｨｩｪｫｯｬｭｮ';
+    text_zenkaku_hiras text := 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんぁぃぅぇぉっゃゅょ';
+    text_zenkaku_kanas text := 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンァィゥェォッャュョ';
+    text_zenkaku_daku_hiras text := 'がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ';
+    text_zenkaku_daku_kanas text := 'ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ';
+    text_hankaku_symbols text := '｡｢｣､･ｰ－';
+    text_zenkaku_symbols text := '。「」、・ー-';
+    text_zenkaku_space text := '　';
+    text_hankaku_space text := ' ';
+    text_zenkaku_nums text := '０１２３４５６７８９';
+    text_hankaku_nums text := '0123456789';
+    text_zenkaku_upper_alphabets text := 'ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ';
+    text_zenkaku_lower_alphabets text := 'ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ';
+    text_hankaku_upper_alphabets text := 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    text_hankaku_lower_alphabets text := 'abcdefghijllmnopqrstuvwxyz';
+BEGIN
+    IF p_src IS NULL OR p_src = '' THEN
+        RETURN p_src;
+    END IF; 
+
+    FOR i IN 1..array_length(arr_hankaku_daku_kanas, 1) LOOP
+        text_result := replace(text_result, arr_hankaku_daku_kanas[i], arr_zenkaku_daku_kanas[i]);
+    END LOOP;
+
+    text_result := translate(
+        text_result
+        , text_hankaku_kanas || text_zenkaku_daku_hiras || text_hankaku_symbols || text_zenkaku_space || text_zenkaku_upper_alphabets || text_zenkaku_lower_alphabets || text_zenkaku_nums
+        , text_zenkaku_kanas || text_zenkaku_daku_kanas || text_zenkaku_symbols || text_hankaku_space || text_hankaku_upper_alphabets || text_hankaku_lower_alphabets || text_hankaku_nums
+    );  
+
+    RETURN text_result;
+END;
+$$ LANGUAGE plpgsql immutable
