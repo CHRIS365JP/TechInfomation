@@ -1,0 +1,26 @@
+//    // テーブルからデータを取得
+//    private ITable getActualTable() throws Exception {
+//
+//        IDataSet databaseDataSet = getConnection().createDataSet();
+//        ITable actualTable = databaseDataSet.getTable("table_name");
+//        return actualTable;
+//    }
+//
+//    // 期待値となるデータをファイルから取得するメソッド。引数はファイルのパス
+//    private ITable getExpectedTable(String filepath) throws Exception {
+//
+//        IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(new File(filepath));
+//        ITable expectedTable = expectedDataSet.getTable("table_name");
+//
+//        return expectedTable;
+//    }
+
+
+//    @Test
+//    @Rollback
+//    public void testUpdate() throws Exception {
+//        DataModel dataModel = repository.findOne(1);
+//        // テスト用のデータを作成
+//        ITable todoId = getActualTable();
+//        System.out.println(todoId);
+//    }
