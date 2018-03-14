@@ -1,0 +1,17 @@
+http://amateras.osdn.jp/cgi-bin/fswiki/wiki.cgi?page=JSEL
+
+<repositories>
+  <repository>
+    <id>amateras</id>
+    <name>Project AMateras Maven2 Repository</name>
+    <url>http://amateras.sourceforge.jp/mvn/</url>
+  </repository>
+</repositories>
+...
+<dependencies>
+  <dependency>
+    <groupId>jp.sf.amateras.functions</groupId>
+    <artifactId>functions</artifactId>
+    <version>1.1.2</version>
+  </dependency>
+</dependencies>
