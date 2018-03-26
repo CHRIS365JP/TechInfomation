@@ -1,0 +1,36 @@
+Spring mvc When using enctype=“multipart/form-data” modelAttribute values equal null in the controller
+
+<form:form action="${pageContext.request.contextPath}/app" 
+  method="POST" 
+  id="form" 
+  name="form" 
+  enctype="multipart/form-data" <--
+  modelAttribute="modelForm">
+  
+  
+  1.change echtype.
+  
+  2. complete every config
+  2.1 ^^web.xml
+    <filter>
+        <filter-name>MultipartFilter</filter-name>
+        <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+        <init-param>
+            <param-name>multipartResolverBeanName</param-name>
+            <param-value>multipartResolver</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>MultipartFilter</filter-name>
+        <servlet-name>/*</servlet-name>
+    </filter-mapping>
+  2.2 ^^applicationContext.xml
+    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+    </bean>
+
+  2.3 ^^web.xml
+  <multipart-config>  
+    <!--location>/tmp</location-->  
+    <max-file-size>10485760</max-file-size>
+    <max-request-size>20480000</max-request-size>
+  </multipart-config>
