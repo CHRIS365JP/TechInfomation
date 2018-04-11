@@ -1,9 +1,40 @@
-https://qiita.com/kazuki43zoo/items/7d3fc3e5e07d630c8eec
+
+
 nested exception is java.lang.IndexOutOfBoundsException: Index: 256, Size: 256
+
+1.
+https://qiita.com/kazuki43zoo/items/7d3fc3e5e07d630c8eec
 Spring MVCでは、リクエストパラメータをJava Bean（＝フォームオブジェクト）にバインディングしてControllerのメソッドで受け取ることができ、リストや配列のプロパティについては、インデックス付き配列パラメータ（例：ids[0]）を使用して値を設定する位置を明示的に指定することができます。
 
 上限値を256から512にする場合の設定例
 @InitBinder
 public void configureWebDataBinder(WebDataBinder binder){
     binder.setAutoGrowCollectionLimit(512);
+}
+
+
+2.
+    org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter --(0) @Deprecated
+    
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"> --(1) 0 in favor of
+        <property name="cacheSeconds" value="0" />
+        <property name="webBindingInitializer">
+            <bean class="xxx.DataBindingInitializer" /> --(2) My WebBindingInitializer
+        </property>
+    </bean>
+
+    <mvc:annotation-driven> --(3) Make sure you have <mvc:annotation-driven/> included in your configuration and your bean declared prior to it.
+  
+My Class  
+public class DataBindingInitializer implements WebBindingInitializer {
+
+    @Override
+    public void initBinder(WebDataBinder binder, WebRequest request) {
+        binder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
+    }
+
+    //@InitBinder
+    //public void initBinder(WebDataBinder binder) {
+    //    binder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
+    //}
 }
