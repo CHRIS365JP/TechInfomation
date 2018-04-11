@@ -1,5 +1,5 @@
 https://qiita.com/kazuki43zoo/items/7d3fc3e5e07d630c8eec
-
+nested exception is java.lang.IndexOutOfBoundsException: Index: 256, Size: 256
 Spring MVCでは、リクエストパラメータをJava Bean（＝フォームオブジェクト）にバインディングしてControllerのメソッドで受け取ることができ、リストや配列のプロパティについては、インデックス付き配列パラメータ（例：ids[0]）を使用して値を設定する位置を明示的に指定することができます。
 
 上限値を256から512にする場合の設定例
