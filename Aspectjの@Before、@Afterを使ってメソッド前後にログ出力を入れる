@@ -1,0 +1,6 @@
+springにはAOPの概念があり、ビジネスロジックの本質とは異なった処理を別クラスに定義して、ビジネスロジックの実行前後などで共通処理として織り込む(インジェクションする)ことが出来ます。
+
+@Before、@Afterは、springで使われる頻度の高いインジェクト方式です。
+今回は基本的な@Before、@Afterの使い方を紹介していきます。
+
+http://javatechnology.net/spring/aspectj-before-after/
