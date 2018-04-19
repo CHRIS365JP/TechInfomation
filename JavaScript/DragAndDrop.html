@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style type="text/css">
+#dropEle div {
+    float: left;
+}
+</style>
+<script src="jquery-3.2.1.min.js"></script>
 
+<script>
+    $(function() {
+        console.log("start");
+        // DRAG
+        jQuery("#dragEle1")[0].ondragstart = function(event) {
+            event.dataTransfer.setData("Text", event.target.id);
+
+        };
+        $("#dragEle2")[0].ondragstart = function(event) {
+            event.dataTransfer.setData("Text", event.target.id);
+        };
+        $("#dragEle3")[0].ondragstart = function(event) {
+            event.dataTransfer.setData("Text", event.target.id);
+        };
+        // DROP
+        $("#dropEle1")[0].ondrop = function(event) {
+            var id = event.dataTransfer.getData("Text");
+            console.log(id);
+            $(this).append($("#" + id));
+            event.preventDefault();
+        };
+        $("#dropEle2")[0].ondrop = function(event) {
+            var id = event.dataTransfer.getData("Text");
+            $(this).append($("#" + id));
+            console.log(id);
+            event.preventDefault();
+        };
+        $("#dropEle1")[0].ondragover = function(event) {
+            event.preventDefault();
+        }
+        $("#dropEle2")[0].ondragover = function(event) {
+            event.preventDefault();
+        }
+    });
+</script>
+</head>
+<body>
+    <div style="border: 1px solid #444; width: 330px; height: 202px; margin-top20px; overflow-y: scroll;" id="dropEle1">
+        <div style="padding: 2px; height: 50px; line-height: 50px;" draggable="true" id="dragEle1">
+            <div style="border: 1px solid red; width: 47px; height: 47px; line-height: 50px;">1</div>
+        </div>
+        <div style="border: 1px solid red; width: 50px; height: 50px; line-height: 50px;" draggable="true" id="dragEle2">2</div>
+        <div style="border: 1px solid red; width: 50px; height: 50px; line-height: 50px;" draggable="true" id="dragEle3">3</div>
+    </div>
+
+    <div style="border: 1px solid #444; width: 330px; height: 202px; margin-top20px; overflow-y: scroll;" id="dropEle2">
+    </div>
+</body>
+</html>
