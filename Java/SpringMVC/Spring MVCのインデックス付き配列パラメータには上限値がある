@@ -38,3 +38,6 @@ public class DataBindingInitializer implements WebBindingInitializer {
     //    binder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
     //}
 }
+
+Binderの初期化について （パラメタからモデルへの型変換）
+https://sites.google.com/site/soracane/home/springnitsuite/spring-mvc/08-binderno-chu-qi-huanitsuite-parametakaramoderuheno-xing-bian-huan
