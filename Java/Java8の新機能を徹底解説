@@ -1,1 +1,19 @@
 https://www.sejuku.net/blog/12614
+
+SAMPLE:
+String str = null;
+Optional<String> value = Optional.ofNullable(str);
+
+①Optional ifPresent
+value.ifPresent(System.out::println);
+②Optional orElse
+str = value.orElse("abc");     ==> if(str == null) str = "abc";
+③orElseの引数にラムダ式を使う場合
+str  = value.orElseGet(
+    () -> {
+        Random rnd = new Random();
+        int ran = rnd.netInt(10);
+        return "" + ran;
+    }
+);
+System.out.println(str);
