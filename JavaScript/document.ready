@@ -1,0 +1,7 @@
+$(fucntion(){...});
+jQuery(function($){...});
+$(document).ready(function(){...});
+jQuery(document).ready(function(){...});
+おなじ
+
+(fucntion($){...})(jQuery);  == var fn = function(s){...};fn(jQuery);
