@@ -1,0 +1,7 @@
+        <interface name="public">
+			      <any-address/>
+            <!-- <inet-address value="${jboss.bind.address:0.0.0.0}"/> -->
+        </interface>
+        
+        <socket-binding name="management-http" interface="public" port="${jboss.management.http.port:9990}"/>
+        <socket-binding name="management-https" interface="public" port="${jboss.management.https.port:9993}"/>
