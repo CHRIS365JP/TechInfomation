@@ -1,0 +1,10 @@
+VM arg 
+-Djboss.socket.binding.port-offset=100 
+
+standalone.xml
+<socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:100}">
+
+
+
+PS:Memory
+"-Dprogram.name=JBossTools: WildFly 11" -server -Xms512m -Xmx1024m
