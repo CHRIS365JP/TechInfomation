@@ -1,0 +1,69 @@
+#Version
+SELECT * FROM v$version;
+
+#Tablespace
+SELECT *
+FROM DBA_TABLESPACES
+
+#表領域の使用率の確認
+SELECT
+     tablespace_name
+    ,to_char(nvl(total_bytes / 1024 / 1024,0),'999,999,999')                         AS "SIZE(MB)"
+    ,to_char(nvl((total_bytes - free_total_bytes) / 1024 / 1024,0),'999,999,999')    AS "USED(MB)"
+    ,to_char(nvl(free_total_bytes/1024 / 1024,0),'999,999,999')                      AS "FREE(MB)"
+    ,round(nvl((total_bytes - free_total_bytes) / total_bytes * 100,100),2)          AS "RATE(%)"
+FROM
+( SELECT
+        tablespace_name
+        ,SUM(Bytes) total_bytes
+    FROM
+        dba_data_files
+    GROUP BY
+        tablespace_name
+),
+( SELECT
+         tablespace_name free_tablespace_name
+        ,SUM(Bytes) free_total_bytes
+    FROM
+        dba_free_space
+    GROUP BY tablespace_name
+)
+WHERE
+    tablespace_name = free_tablespace_name(+);
+
+#User
+SELECT * FROM user_users;
+SELECT * FROM dba_users;
+
+#ユーザーの表領域クォータを確認する
+SELECT * FROM user_ts_quotas;
+SELECT * FROM dba_ts_quotas;
+
+#すべてのユーザーを確認する
+SELECT * FROM all_users;
+
+#ログインユーザーのテーブル一覧を取得するSQL
+SELECT *
+FROM   USER_TABLES
+ORDER BY TABLE_NAME
+
+#ログインユーザーがアクセスできるすべてのテーブル一覧を取得するSQL
+SELECT *
+FROM   ALL_TABLES
+ORDER BY OWNER,TABLE_NAME
+
+#データベース内のすべてのテーブル一覧を取得するSQL
+SELECT *
+FROM   DBA_TABLES
+ORDER BY OWNER,TABLE_NAME
+
+#指定した表領域にあるテーブル一覧を取得するSQL
+SELECT TABLE_NAME
+FROM   *
+WHERE  TABLESPACE_NAME = ‘＜表領域名＞’
+ORDER BY TABLE_NAME
+
+#Directory
+SELECT * FROM dba_directories;
+CREATE DIRECTORY test_dir As 'D:\test_dir';
+DROP DIRECTORY test_dir;
