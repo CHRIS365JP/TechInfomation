@@ -1,0 +1,50 @@
+[Oracle]ジョブをスケジューリングして定期実行する方法
+http://skill-note.net/post-707/
+
+DECLARE
+    l_job_exists NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO l_job_exists
+      FROM DBA_SCHEDULER_JOBS
+     WHERE job_name = 'job_name'　AND OWNER='OWNER'
+    ;
+
+    IF l_job_exists = 1 THEN
+        DBMS_SCHEDULER.DROP_JOB(job_name => 'job_name');
+    END IF;
+
+    DBMS_SCHEDULER.CREATE_JOB (
+        job_name	=> 'job_name', 
+        job_type		=> 'PLSQL_BLOCK',
+        job_action	=> 'BEGIN DBMS_STATS.GATHER_SCHEMA_STATS (OWNNAME => ''OWNER'',OPTIONS => ''GATHER'');END;',
+        repeat_interval	=> 'FREQ=DAILY;BYHOUR=5;BYMINUTE=15'
+    );
+    
+    DBMS_SCHEDULER.ENABLE('job_name');
+END;
+/
+
+--ジョブ有効化
+SELECT 
+    JOB_NAME
+    ,ENABLED 
+FROM DBA_SCHEDULER_JOBS AND OWNER='OWNER'
+;
+
+--ジョブ
+BEGIN
+  DBMS_SCHEDULER.RUN_JOB('job_name');
+END;
+/
+
+--ステータス確認
+SELECT
+    LOG_ID
+    ,LOG_DATE
+    ,JOB_NAME
+    ,STATUS
+    ,ERROR#
+FROM
+    DBA_SCHEDULER_JOB_RUN_DETAILS
+WHERE OWNER='OWNER'
+;
