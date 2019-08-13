@@ -1,0 +1,2 @@
+mybatis-config.xml
+<setting name="logImpl" value="STDOUT_LOGGING" />
