@@ -1,0 +1,7 @@
+https://qiita.com/kangyoosam/items/140520794779f35f8e37
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
