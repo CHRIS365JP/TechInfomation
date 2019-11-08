@@ -1,0 +1,3 @@
+子画面　⇒　window.opener.function();
+
+親画面　⇒　JS body○　head×
