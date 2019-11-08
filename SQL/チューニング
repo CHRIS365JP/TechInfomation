@@ -1,0 +1,11 @@
+A.SELECT文をチューニングする方法
+　１．インデックスの作成
+　２．ヒントの追加
+　３．パラレル実行
+　４．SQLの書き換え
+　５．バッファキャッシュの活用
+B.OR ⇒　UNION(UNION ALL)
+
+C.EXIST NOT EXIST
+
+D.IN NOT IN
