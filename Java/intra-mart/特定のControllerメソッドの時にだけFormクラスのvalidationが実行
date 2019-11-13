@@ -1,0 +1,5 @@
+・FormクラスのValidate用のアノテーションにgroups属性を設定し、値にclass名を設定する
+・Controllerクラスのメソッド引数のFormに@Validateを設定し、Formクラスに指定したgroups属性と同じclassを設定する。
+　→classは紐付けだけに使用するclassです。特定のinterfaceを実装するなどは不要
+
+上記を行うと、特定のControllerメソッドの時にだけFormクラスのvalidationが実行されるようになる。
