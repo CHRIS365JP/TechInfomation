@@ -1,0 +1,19 @@
+https://qiita.com/KevinFQ/items/09c73cc76cb646ae63f4
+
+1.
+Comparator<SortBean> comparator = Comparator
+                .comparing(SortBean::getA).reversed()
+                .thenComparing(SortBean::getB);
+                
+sortList.stream().sorted(comparator).collect(Collectors.toList());
+
+2.
+Comparator<SortBean> comparator = Comparator
+                .comparing(SortBean::getA)
+                .thenComparing(new Comparator<SortBean>(){
+                    @Override
+                    public int compare(SortBean o1, SortBean o2) {
+                        // TODO 自動生成されたメソッド・スタブ
+                        return 0;
+                    }
+sortList.stream().sorted(comparator).collect(Collectors.toList());             
