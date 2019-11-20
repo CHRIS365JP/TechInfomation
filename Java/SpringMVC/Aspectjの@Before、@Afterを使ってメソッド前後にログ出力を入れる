@@ -4,3 +4,137 @@ springにはAOPの概念があり、ビジネスロジックの本質とは異�
 今回は基本的な@Before、@Afterの使い方を紹介していきます。
 
 http://javatechnology.net/spring/aspectj-before-after/
+
+1.特定のパッケージを指定した@Beforeと@After
+@Aspect
+@Component
+public class ExampleAspect {
+ 
+    @Before("execution(* com.example.service.impl.*.*(..))")
+    public void before() {
+        System.out.println("このログは、メソッド処理「前」に実行しています。");
+    }
+ 
+    @After("execution(* com.example.service.impl.*.*(..))")
+    public void after() {
+        System.out.println("このログは、メソッド処理「後」に実行しています。");
+    }
+ 
+}
+
+2.特定のパッケージ配下(サブクラスを含)全てを指定した@Beforeと@After
+@Aspect
+@Component
+public class ExampleAspect {
+ 
+    @Before("execution(* com.example..*.*(..))")
+    public void before() {
+        System.out.println("このログは、メソッド処理「前」に実行しています。");
+    }
+ 
+    @After("execution(* com.example..*.*(..))")
+    public void after() {
+        System.out.println("このログは、メソッド処理「後」に実行しています。");
+    }
+ 
+}
+
+3.特定のクラスを指定した@Beforeと@After
+@Aspect
+@Component
+public class ExampleAspect {
+ 
+    @Before("execution(* com.example.service.impl.ExampleServoceImpl.*(..))")
+    public void before() {
+        System.out.println("このログは、メソッド処理「前」に実行しています。");
+    }
+ 
+    @After("execution(* com.example.service.impl.ExampleServoceImpl.*(..))")
+    public void after() {
+        System.out.println("このログは、メソッド処理「後」に実行しています。");
+    }
+ 
+}
+
+4.特定のメソッドを指定した@Beforeと@After
+@Aspect
+@Component
+public class ExampleAspect {
+ 
+    @Before("execution(* com.example.service.impl.ExampleServoceImpl.find(..))")
+    public void before() {
+        System.out.println("このログは、メソッド処理「前」に実行しています。");
+    }
+ 
+    @After("execution(* com.example.service.impl.ExampleServoceImpl.find(..))")
+    public void after() {
+        System.out.println("このログは、メソッド処理「後」に実行しています。");
+    }
+ 
+}
+
+5.特定の修飾子を指定した@Beforeと@After
+@Aspect
+@Component
+public class ExampleAspect {
+ 
+    @Before("execution(public * com.example..*.*(..))")
+    public void before() {
+        System.out.println("このログは、メソッド処理「前」に実行しています。");
+    }
+ 
+    @After("execution(public * com.example..*.*(..))")
+    public void after() {
+        System.out.println("このログは、メソッド処理「後」に実行しています。");
+    }
+ 
+}
+
+6.springでAOPを使うための各種xmlファイルの設定
+AOPを使うために、springの設定ファイル(servlet-context.xml)とmavenの設定ファイル(pom.xml)へ設定を追加します。
+※mavenの設定ファイル(pom.xml)は依存ライブラリをmavenで管理している場合のみに限ります。
+
+  6.1 servlet-context.xmlの設定
+  マーカーのついている部分をservlet-context.xmlへ追加して下さい。
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+ http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+・
+・
+    <!-- AOPを使用するため以下を追加します。 -->
+    <aop:aspectj-autoproxy/>
+・
+・
+</beans:beans>
+
+ 6.2 pom.xmlへ設定
+ cglibは、spring-aopの依存ライブラリなので追加する必要があります。
+・
+・
+    <dependencies>
+        <!-- aop -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>3.1.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>2.2</version>
+        </dependency>
+    </dependencies>
+・
+・
+
+7.最後に
+@Before、@Afterをどこで動かすかについては「execution」で制御することが可能です。@Before、@Afterの使いどころは、「execution」の使い方をしっかりと押さえておけばOKです。
+
+@Before、@Afterのサンプルでしたが、例外発生時やメソッド前後にも同じようにAspectjで処理をインジェクション出来るアノテーションが存在します。また@Before、@Afterでも通常のメソッド同様引数を受け取ることが出来ます。(これが出来ないとあまり役にたたないですよね。)
+次回はこの辺りについてサンプルソースを作っていきたいと思います。
