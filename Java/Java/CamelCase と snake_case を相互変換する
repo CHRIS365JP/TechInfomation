@@ -1,0 +1,56 @@
+https://qiita.com/toastkidjp/items/3c8f21da085ecaace7c3
+
+    /**
+     * 単語記法切替
+     * @param snake 単語の区切りで_を使って連結する記法)
+     * @return 単語の区切りで大文字にする記法
+     */
+    private final String snakeToCamel(final String snake) {
+        if (StringUtils.isEmpty(snake)) {
+            return snake;
+        }
+        final StringBuilder sb = new StringBuilder(snake.length() + snake.length());
+        for (int i = 0; i < snake.length(); i++) {
+            final char c = snake.charAt(i);
+            if (c == '_') {
+                sb.append((i + 1) < snake.length() ? Character.toUpperCase(snake.charAt(++i)) : "");
+            } else {
+                sb.append(sb.length() == 0 ? Character.toUpperCase(c) : Character.toLowerCase(c));
+            }
+        }
+        return sb.toString();
+    }
+    
+    // camelToSnake()
+    public static final String camelToSnake(final String camel) {
+        if (StringUtils.isEmpty(camel)) {
+            return camel;
+        }
+        final StringBuilder sb = new StringBuilder(camel.length() + camel.length());
+        for (int i = 0; i < camel.length(); i++) {
+            final char c = camel.charAt(i);
+            if (Character.isUpperCase(c)) {
+                sb.append(sb.length() != 0 ? '_' : "").append(Character.toLowerCase(c));
+            } else {
+                sb.append(Character.toLowerCase(c));
+            }
+        }
+        return sb.toString();
+    }
+    
+    // snakeToCamel()
+    public static final String snakeToCamel(final String snake) {
+        if (StringUtils.isEmpty(snake)) {
+            return snake;
+        }
+        final StringBuilder sb = new StringBuilder(snake.length() + snake.length());
+        for (int i = 0; i < snake.length(); i++) {
+            final char c = snake.charAt(i);
+            if (c == '_') {
+                sb.append((i + 1) < snake.length() ? Character.toUpperCase(snake.charAt(++i)) : "");
+            } else {
+                sb.append(sb.length() == 0 ? Character.toUpperCase(c) : Character.toLowerCase(c));
+            }
+        }
+        return sb.toString();
+    }
