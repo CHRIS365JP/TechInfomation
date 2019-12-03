@@ -1,0 +1,19 @@
+    /**
+     * プロパティ値取得
+     * @param fieldName プロパティ名前
+     * @param object オブジェクト
+     * @return プロパティ値
+     */
+    private String getFieldValueByFieldName(String fieldName, Object object) {
+        Field field;
+        try {
+            field = object.getClass().getDeclaredField(snakeToCamel(fieldName));
+            field.setAccessible(true);
+            String fieldVale = (String) field.get(object);
+            field.setAccessible(false);
+            return fieldVale;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return "";
+    }
