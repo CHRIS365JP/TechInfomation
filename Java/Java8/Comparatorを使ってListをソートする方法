@@ -17,3 +17,12 @@ Comparator<SortBean> comparator = Comparator
                         return 0;
                     }
 sortList.stream().sorted(comparator).collect(Collectors.toList());             
+
+3.// 複合キーを作成
+Function<SortBean, String> compositeKey = formb -> {
+                StringBuffer sb = new StringBuffer();
+                sb.append(formb.getA()).append("-").append(formb.getB());
+                return sb.toString();
+            };
+List<SortBean> sortList = new ArrayList<>();
+Map<String, List<SortBean>> map = sortList.stream().collect(Collectors.groupingBy(compositeKey));
