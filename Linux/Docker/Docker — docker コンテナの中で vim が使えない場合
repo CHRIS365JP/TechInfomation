@@ -1,0 +1,20 @@
+https://qiita.com/YumaInaura/items/3432cc3f8a8553e05a6e
+
+1.
+#apt-get update
+#apt-get install vim
+
+2.
+#yum install vim
+
+3.
+#apk update
+#apk add vim
+
+4.
+Dockerfile
+
+#FROM ubuntu
+
+#RUN ["apt-get", "update"]
+#RUN ["apt-get", "install", "-y", "vim"]
