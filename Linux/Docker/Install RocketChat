@@ -1,0 +1,66 @@
+https://www.atmarkit.co.jp/ait/articles/1609/29/news019.html
+
+【1】MongoDBコンテナイメージを取得する
+# docker pull mongo
+
+
+【2】RocketChatコンテナイメージを取得する
+# docker pull rocketchat/rocket.chat
+
+【3】Docker Composeのインストール
+既にインストールしたので、飛ばす
+
+【4】Docker Composeファイルを作成し、RocketChatを起動
+# mkdir -p /var/www/rocket.chat/data/runtime/db
+# mkdir -p /var/www/rocket.chat/data/dump
+
+次に、Docker Composeファイルを作成します。「/var/www/rocket.chat/docker-compose.yml」を用意し、下記のように更新してください。
+------------------------------------------------------------------------------------------------------------------------
+db:
+  # コンテナイメージを指定（image:コンテナイメージ名:タグ名）
+  image: mongo:latest
+  # コンテナのデータをボリュームとしてホストOSにマウント
+  volumes:
+    # MongoDBのデータをマウント
+    - ./data/runtime/db:/data/db
+    # MongoDBのdumpファイルをマウント
+    - ./data/dump:/dump
+  # MongoDBのjournalファイルをsmallfilesとする
+  command: mongod --smallfiles
+ 
+rocketchat:
+  # コンテナイメージを指定（image:コンテナイメージ名:タグ名）
+  image: rocketchat/rocket.chat:latest
+  # 環境変数を設定
+  environment:
+    # MongoDB（db）のURLを指定
+    - MONGO_URL=mongodb://db:27017/rocketchat
+    # RocketChatのURL（ここではホスト名をlocalhostとしています）
+    - ROOT_URL=http://localhost
+    # アカウントのメールアドレスのドメインチェックを無効化
+    - Accounts_UseDNSDomainCheck=false
+  # MongoDB（db）へのリンクを指定
+  links:
+    - db:db
+  # RocketChatのポートを設定
+  ports:
+    - 3000:3000
+------------------------------------------------------------------------------------------------------------------------
+
+　Docker Composeファイルを作成したら、いよいよRocketChatの起動です（正確に言うと、RocketChatコンテナとMongoDBコンテナを作成します）。
+ # cd /var/www/rocket.chat/
+ # docker-compose up -d
+ 
+ 作成できたら、以下URLアクセスし、RocketChatに接続してみましょう。
+ http://｛IPアドレスまたはホスト名｝:3000/
+ 
+ ログイン画面が表示されたら、RocketChatの構築は完了です。
+ なお、RocketChatは以下コマンドで起動/停止することができます。
+ # docker-compose start
+ Starting db ... done
+ Starting rocketchat ... done
+ #
+ # docker-compose stop
+ Stopping rocketchat_rocketchat_1 ... done
+ Stopping rocketchat_db_1 ... done
+ #
