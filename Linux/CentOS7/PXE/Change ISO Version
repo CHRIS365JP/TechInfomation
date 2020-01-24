@@ -1,0 +1,29 @@
+#umount マウント先ディレクトリ
+[root@dlp ~]# umount /var/pxe/CentOS7
+
+=======================================================================================
+[root@dlp ~]# mount -t iso9660 -o loop /home/iso/[New].iso /var/pxe/CentOS7
+
+[root@dlp ~]# cp /var/pxe/CentOS7/images/pxeboot/vmlinuz /var/lib/tftpboot/CentOS7/
+[root@dlp ~]# cp /var/pxe/CentOS7/images/pxeboot/initrd.img /var/lib/tftpboot/CentOS7/
+
+
+========================================================================================
+[root@dlp ~]# vi /var/lib/tftpboot/pxelinux.cfg/default
+
+    kernel CentOS7/vmlinuz
+    append initrd=CentOS7/initrd.img method=http://10.0.0.30/centos7 devfs=nomount
+    
+========================================================================================
+
+========================================================================================
+[root@dlp ~]# vi /etc/httpd/conf.d/pxeboot.conf
+
+Alias /centos7 /var/pxe/CentOS7
+<Directory /var/pxe/CentOS7>
+    Options Indexes FollowSymLinks
+    # アクセス許可範囲
+    Require ip 127.0.0.1 10.0.0.0/24
+</Directory>
+
+[root@dlp ~]# systemctl restart httpd 
