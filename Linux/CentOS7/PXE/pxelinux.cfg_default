@@ -1,0 +1,23 @@
+DEFAULT menu.c32
+PROMPT 0
+TIMEOUT 300
+ONTIMEOUT Local
+
+MENU TITLE PXE Boot Menu
+
+LABEL Local
+        MENU LABEL 1. Local HardDisk Drive
+        LOCALBOOT 0
+
+LABEL CentOS7 x86_64
+        MENU LABEL 2. CentOS7 x86_64
+        kernel CentOS7/vmlinuz
+        append load initrd=CentOS7/initrd.img method=http://PXE.Server/CentOS7 devfs=nomount
+
+LABEL Reboot
+        MENU LABEL 4. Reboot
+        COM32 reboot.c32
+
+LABEL Poweroff
+        MENU LABEL 5. Poweroff
+        COMBOOT poweroff.com
