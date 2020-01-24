@@ -1,0 +1,25 @@
+https://qiita.com/takeru08ma/items/f5b215ae462b1f71cbf8
+
+=======================================================
+システム全体
+vi /etc/profile
+
+PROXY='$proxyserver:$port'
+export http_proxy=$PROXY
+export HTTP_PROXY=$PROXY
+export https_proxy=$PROXY
+export HTTPS_PROXY=$PROXY
+export no_proxy='localhost,127.0.0.1'
+
+source /etc/profile
+
+=======================================================
+yum
+vi /etc/yum.conf # <= 実行するコマンド
+
+proxy=http://$proxyserver:$port
+
+
+=======================================================
+curl
+vi ~/.curlrc # <= 実行するコマンド
