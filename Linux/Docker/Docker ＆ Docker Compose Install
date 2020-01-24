@@ -1,0 +1,28 @@
+Docker ＆ Docker Composeのインストール(CentOS7.4)
+https://qiita.com/subretu2/items/549bc720165004bca3c3
+
+===========================================================================================
+A.Dockerのインストール
+1.ソフトウェアパッケージをインストール
+  yum install -y yum-utils device-mapper-persistent-data lvm2
+  
+2.Docker CEのyumリポジトリの追加
+  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+3.Docker CEのインストール
+  yum -y install docker-ce
+  
+4.バージョン確認
+  docker --version
+  
+===========================================================================================
+B.Docker Composeのインストール
+1.Docker Composeのダウンロード
+  curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  (https://github.com/docker/compose/releases)
+
+2.バイナリの実行権限を適用する
+  chmod +x /usr/local/bin/docker-compose
+  
+3.バージョン確認
+  docker-compose --version
