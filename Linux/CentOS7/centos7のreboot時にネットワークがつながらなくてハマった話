@@ -1,0 +1,3 @@
+nmcli con mod enp0s2f1u3 connection.autoconnect "yes"
+
+device name:enp0s2f1u3
