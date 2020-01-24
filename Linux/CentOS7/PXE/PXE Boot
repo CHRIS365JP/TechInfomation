@@ -1,0 +1,9 @@
+  
+PXE Boot : サーバーの設定
+https://www.server-world.info/query?os=CentOS_7&p=pxe
+PXE Boot : ネットワークインストール
+https://www.server-world.info/query?os=CentOS_7&p=pxe&f=2
+
+
+CentOS7.2インストール（PXE+TFTP+DHCP基本編）
+http://www.mikitechnica.com/14-centos72-pxe.html
