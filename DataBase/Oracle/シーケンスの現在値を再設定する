@@ -1,0 +1,49 @@
+https://www.shift-the-oracle.com/sequence/reset-sequence.html
+
+-- シーケンス SAMPLE_SEQ を 10 に再設定する
+-- DROP SEQUENCE SAMPLE_SEQ ;
+SQL> CREATE SEQUENCE SAMPLE_SEQ ;
+順序が作成されました。
+ 
+SQL> SELECT SAMPLE_SEQ.NEXTVAL FROM DUAL ;
+   NEXTVAL
+----------
+         1
+SQL> CALL RESET_SEQUENCE_LIGHT('SAMPLE_SEQ', 10) ;
+コールが完了しました。
+ 
+SQL> SELECT SAMPLE_SEQ.NEXTVAL FROM DUAL ;
+   NEXTVAL
+----------
+        10
+-- シーケンスの情報を壊す呼び出し例 (MINVALUE と同じ値に再設定を試みる)
+--
+SQL> CALL RESET_SEQUENCE_LIGHT('SAMPLE_SEQ', 1) ;
+CALL RESET_SEQUENCE_LIGHT('SAMPLE_SEQ', 1)
+
+-------------------------------------------------------------------------PROCEDURE START
+CREATE OR REPLACE PROCEDURE SCHEMA_NAME.RESET_SEQUENCE_LIGHT(
+  P_SEQ_NAME    IN VARCHAR2,
+  P_START_WITH  IN NUMBER := 2  -- ここは適当に編集してください
+)
+IS
+  vCurrent      NUMBER;
+  vStart        NUMBER;
+BEGIN
+  vStart := NVL(P_START_WITH, 2); -- ここは適当に編集してください
+  -- 修正用基準値の取得
+  EXECUTE IMMEDIATE
+    'SELECT ' || P_SEQ_NAME ||'.NEXTVAL FROM DUAL' INTO vCurrent;
+  -- シーケンスのメタデータの設定
+  EXECUTE IMMEDIATE
+    'ALTER SEQUENCE '||P_SEQ_NAME||' INCREMENT BY '||(vStart-vCurrent-1);
+  -- シーケンスの再設定
+  EXECUTE IMMEDIATE
+    'SELECT ' || P_SEQ_NAME ||'.NEXTVAL FROM DUAL' INTO vCurrent;
+  -- シーケンスのメタデータ(増分値)の復旧
+  EXECUTE IMMEDIATE
+    'ALTER SEQUENCE ' || P_SEQ_NAME || ' INCREMENT BY 1';
+END;
+/
+
+-------------------------------------------------------------------------PROCEDURE END
