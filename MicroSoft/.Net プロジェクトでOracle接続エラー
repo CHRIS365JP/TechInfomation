@@ -1,0 +1,8 @@
+http://haronoid.hatenablog.com/entry/2017/12/04/191403
+
+C:\Windows\Microsoft.NET\Framework[64]\[version]\Config
+machine.config
+
+<DbProviderFactories>
+    <add name="ODP.NET, Unmanaged Driver" invariant="Oracle.DataAccess.Client" description="Oracle Data Provider for .NET, Unmanaged Driver" type="Oracle.DataAccess.Client.OracleClientFactory, Oracle.DataAccess"/>
+</DbProviderFactories>
