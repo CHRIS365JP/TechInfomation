@@ -1,0 +1,143 @@
+DockerでApacheとTomcat環境構築。ついでにMaven&Java連携
+https://qiita.com/shintaro123/items/a8a3d222d3dd46aba876
+
+./docker/httpd/Dockerfile
+------------------------------------------------------------------------
+FROM centos:7
+
+RUN yum -y update && yum clean all
+RUN yum -y install httpd httpd-devel gcc* make && yum clean all
+
+# mod_jk conf files
+ADD httpd-proxy.conf /etc/httpd/conf.d/
+
+# Simple startup script to avoid some issues observed with container restart 
+ADD run-httpd.sh /run-httpd.sh
+RUN chmod -v +x /run-httpd.sh
+
+CMD ["/run-httpd.sh"]
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+httpd-proxy.conf
+------------------------------------------------------------------------
+# forward to tomcat container
+ProxyPass / ajp://tomcat:8009/
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+run-httpd.sh
+------------------------------------------------------------------------
+#!/bin/bash
+
+# Make sure we're not confused by old, incompletely-shutdown httpd
+# context after restarting the container.  httpd won't start correctly
+# if it thinks it is already running.
+rm -rf /run/httpd/* /tmp/httpd*
+
+exec /usr/sbin/apachectl -DFOREGROUND
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+./docker/tomcat/Dockerfile
+------------------------------------------------------------------------
+FROM tomcat:9.0.1-alpine
+
+MAINTAINER Uchiyama <shintaro.0112@gmail.com>
+
+ADD tomcat-users.xml /usr/local/tomcat/conf/
+ADD context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
+
+RUN rm -rf /usr/local/tomcat/webapps/ROOT
+
+CMD ["catalina.sh", "run"]
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+tomcat-users.xml
+------------------------------------------------------------------------
+<?xml version='1.0' encoding='utf-8'?>
+<tomcat-users>
+  <role rolename="manager-script"/>
+  <user username="manager" password="manager!" roles="manager-script"/>
+</tomcat-users>
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+context.xml
+------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<Context antiResourceLocking="false" privileged="true" >
+<!--
+  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+-->
+  <Manager sessionAttributeValueClassNameFilter="java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"/>
+</Context>
+------------------------------------------------------------------------
+
+./docker-compose.yml
+version: '3'
+services:
+  httpd:
+    container_name: httpd-container
+    build: ./docker/httpd
+    ports:
+      - "80:80"
+  tomcat:
+    container_name: tomcat-container
+    build: ./docker/tomcat
+    expose:
+      - "8009"
+volumes:
+  data: {}
+  
+  
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+docker-compose up -d --build
+docker-compose ps
+
+docker exec -it httpd-container tail -f /etc/httpd/logs/access_log
+docker exec -it tomcat-container1 tail -f /usr/local/tomcat/logs/localhost_access_log.`date +%Y-%m-%d`.log
+
+------------------------------------------------------------------------
+Mavenをインストール
+brew install maven
+mvn -v
+
+------------------------------------------------------------------------
+mvn archetype:generate \ # プロジェクト作成
+-DgroupId=tech.ucwork \ # パッケージ名指定
+-DartifactId=myapp \ # アプリケーション名指定
+-DarchetypeArtifactId=maven-archetype-webapp # 初期のアプリ形式指定（web）
+-DinteractiveMode=false #インタラクティブ形式で実行しない
+
+------------------------------------------------------------------------
+ディレクトリ構成
+$ tree -NL 5 src                                                                                                                     +[master]
+src
+└── main
+    ├── java
+    │   └── tech
+    │       └── ucwork
+    │           └── HelloServlet.java
+    ├── resources
+    │   └── log4j.properties
+    └── webapp
+        ├── WEB-INF
+        │   └── web.xml
+        └── index.jsp
+
+7 directories, 4 files
