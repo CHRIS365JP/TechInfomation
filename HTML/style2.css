@@ -1,0 +1,59 @@
+/* 确保外部容器有滚动条 */
+.table-container {
+    overflow-x: auto;
+    width: 100%;
+    position: relative;
+    border: 1px solid #ddd; /* 外部容器的边框 */
+}
+
+.table-wrapper {
+    min-width: 100%;
+    position: relative;
+}
+
+/* 基本表格样式 */
+table {
+    border-collapse: separate; /* 分离边框 */
+    border-spacing: 0; /* 取消单元格之间的间距 */
+    width: 100%;
+}
+
+/* 头部和单元格样式 */
+th, td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd; /* 表格单元格的边框 */
+    white-space: nowrap; /* 防止自动换行 */
+}
+
+/* 固定第一列的样式 */
+thead th:first-child,
+tbody td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: white; /* 确保背景色 */
+    z-index: 2; /* 确保第一列在其他列之上 */
+    border-right: 2px solid #ddd; /* 固定列的右边框 */
+}
+
+/* 固定表头行的底部边框 */
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: white; /* 确保背景色 */
+    z-index: 1; /* 确保表头在内容上方 */
+    border-bottom: 2px solid #ddd; /* 表头的底边框 */
+}
+
+/* 伪元素用于固定边框的视觉效果 */
+.table-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid #ddd; /* 固定边框样式 */
+    pointer-events: none; /* 允许点击穿透 */
+    z-index: 0; /* 确保伪元素在内容下方 */
+}
